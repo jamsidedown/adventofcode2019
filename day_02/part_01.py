@@ -1,28 +1,16 @@
 from typing import List
 
 
-def run(program: List[int]) -> int:
-    index = 0
-    while True:
-        op = program[index]
+def run(p: List[int]) -> int:
+    for i in range(0, len(p), 4):
+        if p[i] == 99:
+            return p[0]
+        elif p[i] == 1:
+            p[p[i + 3]] = p[p[i + 1]] + p[p[i + 2]]
+        elif p[i] == 2:
+            p[p[i + 3]] = p[p[i + 1]] * p[p[i + 2]]
+    return -1
 
-        if op == 99:
-            break
-
-        input_addr_1 = program[index + 1]
-        input_addr_2 = program[index + 2]
-        output_addr = program[index + 3]
-
-        if op == 1:
-            program[output_addr] = program[input_addr_1] + program[input_addr_2]
-        elif op == 2:
-            program[output_addr] = program[input_addr_1] * program[input_addr_2]
-        else:
-            return -1
-        
-        index += 4
-
-    return program[0]
 
 if __name__ == '__main__':
     with open('input.txt', 'r') as f:
