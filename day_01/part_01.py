@@ -8,8 +8,7 @@ def run(masses: List[int]) -> int:
 
 if __name__ == '__main__':
     with open('input.txt', 'r') as f:
-        masses = f.read().split('\n')
-        masses = [int(mass) for mass in masses if mass]
-        fuel = run(masses)
-
-        print(f'Total fuel required: {fuel}')
+        masses = [int(mass) for mass in f.readlines()]
+    
+    fuel = run(masses)
+    print(f'Total fuel required: {fuel}')
