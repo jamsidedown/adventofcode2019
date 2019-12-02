@@ -2,8 +2,7 @@ from typing import List
 
 
 def run(masses: List[int]) -> int:
-    fuel = [(mass // 3) - 2 for mass in masses]
-    return sum(fuel)
+    return sum((mass // 3) - 2 for mass in masses)
 
 
 if __name__ == '__main__':
