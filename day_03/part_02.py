@@ -32,7 +32,7 @@ def run(wires: List[List[str]]) -> int:
         wire_points = {}
         for instruction in wire:
             direction, distance = parse_instruction(instruction)
-            for i in range(distance):
+            for _ in range(distance):
                 coords.move(direction)
                 if str(coords) not in wire_points:
                     wire_points[str(coords)] = coords.z
