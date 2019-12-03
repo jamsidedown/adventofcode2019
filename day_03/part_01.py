@@ -1,80 +1,56 @@
 import re
-from typing import List, NamedTuple
+from typing import List, Tuple
 
 
-class Point(NamedTuple):
-    x: int
-    y: int
+INSTRUCTION_REGEX = re.compile(r'^([UDLR])(\d+)$')
 
 
-class Line(NamedTuple):
-    start: Point
-    end: Point
+class Point:
+    def __init__(self, x: int, y: int):
+        self.x = x
+        self.y = y
 
+    def __str__(self):
+        return f'{self.x},{self.y}'
 
-instruction_regex = re.compile(r'^([UDLR])(\d+)$')
+    def move(self, direction: str):
+        if direction == 'U':
+            self.y += 1
+        elif direction == 'D':
+            self.y -= 1
+        elif direction == 'R':
+            self.x += 1
+        elif direction == 'L':
+            self.x -= 1
+    
+    @property
+    def distance(self):
+        return abs(self.x) + abs(self.y)
 
 
 def run(wires: List[List[str]]) -> int:
-    lines = []
+    wire_paths = []
 
     for wire in wires:
         coords = Point(0, 0)
-        wire_lines = []
+        wire_points = {}
         for instruction in wire:
-            re_match = instruction_regex.match(instruction)
-            direction = re_match.group(1)
-            distance = int(re_match.group(2))
-            if direction == 'U':
-                new_coords = Point(coords.x, coords.y + distance)
-            elif direction == 'D':
-                new_coords = Point(coords.x, coords.y - distance)
-            elif direction == 'R':
-                new_coords = Point(coords.x + distance, coords.y)
-            elif direction == 'L':
-                new_coords = Point(coords.x - distance, coords.y)
-            
-            wire_lines.append(Line(coords, new_coords))
-            coords = new_coords
-        lines.append(wire_lines)
+            direction, distance = parse_instruction(instruction)
+            for i in range(distance):
+                coords.move(direction)
+                wire_points[str(coords)] = coords.distance
 
-    collisions = []
-    for first_line in lines[0]:
-        for second_line in lines[1]:
-            intercept = _collision(first_line, second_line)
-            if intercept and not (intercept.x == 0 and intercept.y == 0):
-                collisions.append(intercept)
+        wire_paths.append(wire_points)
 
-    distances = []
-    for collision in collisions:
-        distance = abs(collision.x) + abs(collision.y)
-        distances.append(distance)
+    collisions = set(wire_paths[0]) & set(wire_paths[1])
+    distances = [wire_paths[0][collision] for collision in collisions]
 
     return min(distances)
 
 
-def _collision(first: Line, second: Line) -> Point:
-    if _is_vertical(first) and _is_vertical(second):
-        return None
-    
-    if _is_vertical(first):
-        vertical = first
-        horizontal = second
-    else:
-        vertical = second
-        horizontal = first
-    
-    if (vertical.start.x <= max(horizontal.start.x, horizontal.end.x) and 
-            vertical.start.x >= min(horizontal.start.x, horizontal.end.x) and
-            horizontal.start.y <= max(vertical.start.y, vertical.end.y) and
-            horizontal.start.y >= min(vertical.start.y, vertical.end.y)):
-        return Point(vertical.start.x, horizontal.start.y)
-
-    return None
-
-
-def _is_vertical(line: Line) -> bool:
-    return line.start.x == line.end.x
+def parse_instruction(instruction: str) -> Tuple[str, int]:
+    re_match = INSTRUCTION_REGEX.match(instruction)
+    return re_match.group(1), int(re_match.group(2))
 
 
 if __name__ == '__main__':
