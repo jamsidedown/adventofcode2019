@@ -1,5 +1,4 @@
-import re
-from typing import List, Tuple
+from typing import List
 from part_01 import parse_instruction
 
 
