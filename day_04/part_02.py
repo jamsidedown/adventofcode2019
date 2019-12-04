@@ -4,5 +4,5 @@ def match(ns: str) -> bool:
 
 if __name__ == '__main__':
     min, max = 357253, 892942
-    matches = sum(1 for n in range(min, max + 1) if match(str(n)))
+    matches = sum(match(str(n)) for n in range(min, max + 1))
     print(f'different passwords: {matches}')
