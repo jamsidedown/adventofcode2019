@@ -1,17 +1,14 @@
 import unittest
-from part_02 import passes_criteria
+from part_02 import match
 
 
 class Part02Tests(unittest.TestCase):
 
     def test_112233_passes(self):
-        passes = passes_criteria(112233)
-        self.assertTrue(passes)
+        self.assertTrue(match(str(112233)))
 
     def test_123444_fails(self):
-        passes = passes_criteria(123444)
-        self.assertFalse(passes)
+        self.assertFalse(match(str(123444)))
 
     def test_111122_passes(self):
-        passes = passes_criteria(111122)
-        self.assertTrue(passes)
+        self.assertTrue(match(str(111122)))
