@@ -22,8 +22,8 @@ class Amplifier:
         i = self.i
         ii = self.II
 
-        while (self.p[self.i] != 99):
-            instruction = str(self.p[self.i]).rjust(5, '0')
+        while (p[i] != 99):
+            instruction = str(p[i]).rjust(5, '0')
             opcode = int(instruction[-2:])
             modes = [instruction[2], instruction[1], instruction[0]]
             modes = [bool(int(mode)) for mode in modes]
