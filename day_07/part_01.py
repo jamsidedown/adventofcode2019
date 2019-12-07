@@ -3,10 +3,8 @@ import itertools
 from typing import List, Deque
 
 
-def run(p: List[str], input_parameters: Deque[int]) -> int:
-    for i in range(len(p)):
-        p[i] = int(p[i])
-
+def run(program: List[str], input_parameters: Deque[int]) -> int:
+    p = [int(x) for x in program]
     i = 0
     ii = {1: 4, 2: 4, 3: 2, 4: 2, 5: 3, 6: 3, 7: 4, 8: 4}
 
@@ -46,11 +44,11 @@ def run(p: List[str], input_parameters: Deque[int]) -> int:
     return -1
 
 
-def run_thrusters(p: List[str], phase_settings: Deque[int]) -> int:
+def run_thrusters(program: List[str], phase_settings: Deque[int]) -> int:
     output = 0
     while phase_settings:
         input_parameters = deque([phase_settings.popleft(), output])
-        output = run([*p], input_parameters)
+        output = run(program, input_parameters)
     return output
 
 

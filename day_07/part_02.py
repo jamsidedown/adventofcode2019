@@ -6,10 +6,7 @@ class Amplifier:
     II = {1: 4, 2: 4, 3: 2, 4: 2, 5: 3, 6: 3, 7: 4, 8: 4}
 
     def __init__(self, program: List[str], phase_setting: int):
-        for i in range(len(program)):
-            program[i] = int(program[i])
-
-        self.p = program
+        self.program = [int(x) for x in program]
         self.phase = phase_setting
         self.i = 0
         self.inputs = 0
@@ -18,7 +15,7 @@ class Amplifier:
         if input_parameter is None:
             return None
 
-        p = self.p
+        p = self.program
         i = self.i
         ii = self.II
 
@@ -61,10 +58,10 @@ class Amplifier:
         return None
 
 
-def run_thrusters(p: List[str], phase_settings: Iterable[int]) -> int:
+def run_thrusters(program: List[str], phase_settings: Iterable[int]) -> int:
     amplifiers = []
     for phase_setting in phase_settings:
-        amp = Amplifier([*p], phase_setting)
+        amp = Amplifier(program, phase_setting)
         amplifiers.append(amp)
     
     output = 0
