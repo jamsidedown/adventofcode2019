@@ -1,7 +1,7 @@
 from typing import List
 
 
-def run(image: List[int], width: int, height: int) -> List:
+def get_layers(image: List[int], width: int, height: int) -> List:
     layers = []
     i = 0
     pixels = width * height
@@ -22,7 +22,8 @@ if __name__ == '__main__':
     with open('input.txt', 'r') as f:
         valids = {str(x) for x in range(10)}
         image = [int(x) for x in f.read() if x in valids]
-    layers = run(image, 25, 6)
+
+    layers = get_layers(image, 25, 6)
 
     zero_counts = [sum(row.count(0) for row in layer) for layer in layers]
     layer_index = zero_counts.index(min(zero_counts))
