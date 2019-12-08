@@ -4,18 +4,15 @@ from part_01 import get_layers
 
 def flatten(layers: List[List[List[int]]]) -> List[List[int]]:
     flattened = []
-    visible = {0, 1}
     for layer in reversed(layers):
         if not flattened:
             flattened = layer
             pass
-        height = len(layer)
-        for y in range(height):
+        for y in range(len(layer)):
             row = layer[y]
-            width = len(row)
-            for x in range(width):
+            for x in range(len(row)):
                 pixel = row[x]
-                if pixel in visible:
+                if pixel in {0, 1}:
                     flattened[y][x] = pixel
 
     return flattened
