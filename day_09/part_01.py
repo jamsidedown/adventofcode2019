@@ -21,53 +21,33 @@ class IntcodeComputer:
             instruction = str(p.get(i, 0)).rjust(5, '0')
             opcode = int(instruction[-2:])
             modes = [instruction[2], instruction[1], instruction[0]]
-            # mode 0: position mode
-            # mode 1: immediate mode
-            # mode 2: relative mode
             modes = [int(mode) for mode in modes]
 
             if opcode == 99:
                 break
 
             if opcode in {1, 2, 4, 5, 6, 7, 8, 9}:
-                if modes[0] == 0:
-                    first = p.get(p.get(i + 1, 0), 0)
-                elif modes[0] == 1:
-                    first = p.get(i + 1, 0)
-                elif modes[0] == 2:
-                    first = p.get(p.get(i + 1, 0) + self.rbase, 0)
-                else:
-                    print(f'problem mode {modes[0]} at address {i}')
+                first = (p.get(p.get(i + 1, 0), 0) if modes[0] == 0
+                         else p.get(i + 1, 0) if modes[0] == 1
+                         else p.get(p.get(i + 1, 0) + self.rbase, 0))
             if opcode in {1, 2, 5, 6, 7, 8}:
-                if modes[1] == 0:
-                    second = p.get(p.get(i + 2, 0), 0)
-                elif modes[1] == 1:
-                    second = p.get(i + 2, 0)
-                elif modes[1] == 2:
-                    second = p.get(p.get(i + 2, 0) + self.rbase, 0)
-                else:
-                    print(f'problem mode {modes[1]} at address {i}')
+                second = (p.get(p.get(i + 2, 0), 0) if modes[1] == 0
+                          else p.get(i + 2, 0) if modes[1] == 1
+                          else p.get(p.get(i + 2, 0) + self.rbase, 0))
             if opcode in {1, 2, 7, 8}:
-                if modes[2] == 0:
-                    address = p.get(i + 3, 0)
-                elif modes[2] == 1:
-                    address = i + 3
-                elif modes[2] == 2:
-                    address = p.get(i + 3, 0) + self.rbase
-                else:
-                    print(f'problem mode {modes[2]} at address {i}')
+                address = (p.get(i + 3, 0) if modes[2] == 0
+                           else i + 3 if modes[2] == 1
+                           else p.get(i + 3, 0) + self.rbase)
+            if opcode in {3}:
+                address = (p.get(i + 1, 0) if modes[0] == 0
+                           else i + 1 if modes[0] == 1
+                           else p.get(i + 1, 0) + self.rbase)
 
             if opcode == 1:
                 p[address] = first + second
             elif opcode == 2:
                 p[address] = first * second
             elif opcode == 3:
-                if modes[0] == 0:
-                    address = p.get(i + 1, 0)
-                elif modes[0] == 1:
-                    address = i + 1
-                else:
-                    address = p.get(i + 1, 0) + self.rbase
                 p[address] = input_parameter
             elif opcode == 4:
                 print(first)
