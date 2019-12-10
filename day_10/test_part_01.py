@@ -51,3 +51,23 @@ class Part01Tests(unittest.TestCase):
 
         self.assertEqual(coords, '5,8')
         self.assertEqual(detect, 33)
+
+    def test_third_example(self):
+        asteroids = [
+            '#.#...#.#.',
+            '.###....#.',
+            '.#....#...',
+            '##.#.#.#.#',
+            '....#.#.#.',
+            '.##..###.#',
+            '..#...##..',
+            '..##....##',
+            '......#...',
+            '.####.###.'
+        ]
+
+        asteroids = parse(asteroids)
+        coords, detect = run(asteroids)
+
+        self.assertEqual(coords, '1,2')
+        self.assertEqual(detect, 35)
